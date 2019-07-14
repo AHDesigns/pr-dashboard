@@ -1,6 +1,7 @@
 import React from 'react';
 import logo from './logo.svg';
 import './App.css';
+import Repo from './Repo';
 
 const App: React.FC = () => {
   return (
@@ -10,6 +11,8 @@ const App: React.FC = () => {
         <p>
           Edit <code>src/App.tsx</code> and save to reload.
         </p>
+        <Repo repo="skyport-graphql" />
+        {/* <Repo repo="sky-pages" /> */}
         <a
           className="App-link"
           href="https://reactjs.org"
