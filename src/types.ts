@@ -26,6 +26,8 @@ export function isPrData(data: any): data is prData {
 }
 
 export type pullRequest = {
+    isDraft: boolean,
+    isFailing: boolean,
     title: string,
     url: string,
     author?: {
@@ -59,5 +61,8 @@ export type uniqueReview = {
         login: string,
         avatarUrl: string,
     },
-    onBehalfOf?: string,
+    onBehalfOf?: {
+        login: string,
+        avatarUrl: string,
+    },
 }

@@ -12,6 +12,7 @@ export function getPullRequests(repoData: prDataRequest, storePullRequests: (dat
                 .json()
                 .then((data) => {
                     if (isPrData(data)) {
+                        console.log('pr data', data)
                         storePullRequests(data)
                     } else {
                         console.warn('reviews.request.not.of.type.prData', data);

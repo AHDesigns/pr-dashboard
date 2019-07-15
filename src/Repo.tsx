@@ -17,10 +17,15 @@ const Repo: React.FC<{ repo: string }> = ({ repo }) => {
   useEffect(() => getPullRequests(body, setPrs), [repo])
 
   return (
-    <div className="">
-      <p>NAME: {repo}</p>
+    <div className="repo">
+      <p className="repo-title">NAME: {repo}</p>
       <ul>
-        {prs.pullRequests.length > 0 && prs.pullRequests.map((pr: pullRequest) => <Pr {...pr} />)}
+        {prs.pullRequests.length > 0 &&
+          prs.pullRequests
+            .filter((pr: pullRequest) => !pr.isDraft) // TODO: will likely do something with this later
+            .map((pr: pullRequest) => <li className="repo-item">
+          <Pr {...pr} />
+        </li>)}
       </ul>
     </div>
   );

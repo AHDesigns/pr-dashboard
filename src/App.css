@@ -1,14 +1,44 @@
-.App {
+/* reset */
+/* http://meyerweb.com/eric/tools/css/reset/ 
+   v2.0 | 20110126
+   License: none (public domain)
+*/
+
+html, body, div, span, applet, object, iframe, h1, h2, h3, h4, h5, h6, p, blockquote, pre, a, abbr, acronym, address, big, cite, code, del, dfn, em, img, ins, kbd, q, s, samp, small, strike, strong, sub, sup, tt, var, b, u, i, center, dl, dt, dd, ol, ul, li, fieldset, form, label, legend, table, caption, tbody, tfoot, thead, tr, th, td, article, aside, canvas, details, embed, figure, figcaption, footer, header, hgroup, menu, nav, output, ruby, section, summary, time, mark, audio, video { margin: 0; padding: 0; border: 0; font-size: 100%; font: inherit; vertical-align: baseline; } /* HTML5 display-role reset for older browsers */ article, aside, details, figcaption, figure, footer, header, hgroup, menu, nav, section { display: block; } body { line-height: 1; } ol, ul { list-style: none; } blockquote, q { quotes: none; } blockquote:before, blockquote:after, q:before, q:after { content: ''; content: none; } table { border-collapse: collapse; border-spacing: 0; }
+/* reset */
+
+/**************************************************
+elements
+**************************************************/
+/* Tooltip text */
+.tooltip-hover {
+  visibility: hidden;
+  width: 120px;
+  background-color: black;
+  color: #fff;
   text-align: center;
+  padding: 5px 0;
+  border-radius: 6px;
+ 
+  /* Position the tooltip text - see examples below! */
+  position: absolute;
+  z-index: 1;
 }
 
-.App-logo {
-  animation: App-logo-spin infinite 20s linear;
-  height: 40vmin;
-  pointer-events: none;
+.tooltip:hover .tooltip-hover {
+  visibility: visible;
 }
 
-.App-header {
+/**************************************************
+repo
+**************************************************/
+.App {
+  text-align: left;
+  border: thin solid black;
+  padding: 10px;
+}
+
+/* .App-header {
   background-color: #282c34;
   min-height: 100vh;
   display: flex;
@@ -17,17 +47,81 @@
   justify-content: center;
   font-size: calc(10px + 2vmin);
   color: white;
+} */
+
+/**************************************************
+repo
+**************************************************/
+.repo {
+  width: 100%;
+  /* margin: 10px; */
+  border: red solid thin;
+}
+.repo-title {
+  text-align: center;
+  font-size: 24px;
 }
 
-.App-link {
-  color: #61dafb;
+.repo-item {
+  width: 80%;
+  margin-bottom: 10px;
+}
+/**************************************************
+pr
+**************************************************/
+.pr {
+  /* margin: 10px; */
+  width: 100%;
+  border: #61dafb thin solid;
+
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.pr-image {
+  height: 70px;
+  margin: 5px;
+  /* width: 20px; */
+  /* position: relative; */
+  /* right: 10%; */
+}
+
+.pr-title {
+  flex-grow: 1;
+}
+
+.pr-reviews {
+}
+
+.state--PENDING {
+  border-bottom: thick solid yellow;
+}
+/* .pr-state--COMMENTED {
+  border-bottom: thick solid red;
+} */
+.state--APPROVED {
+  border-bottom: thick solid green;
+}
+.state--CHANGES_REQUESTED {
+  border-bottom: thick solid red;
+}
+
+.failed-ci--true {
+  background-color: #ff9966;
+}
+
+/**************************************************
+review
+**************************************************/
+.review {
+  float: left;
+}
+
+.review-image {
+  width: 60px;
+}
+
+.review > img {
+  width: 50px;
 }

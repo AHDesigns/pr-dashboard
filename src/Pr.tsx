@@ -1,25 +1,50 @@
 import React from 'react';
 import { pullRequest, uniqueReview } from './types';
 
+const Img: React.FC<{ author: { avatarUrl: string, login: string }, cssClassNames?: string }> = ({ author, cssClassNames }) => {
+    return (
+        <span className="tooltip">
+            <img
+                className={cssClassNames}
+                src={author.avatarUrl}
+                alt={author.login}
+            />
+            <div className="tooltip-hover">{author.login}</div>
+        </span>
+    )
+};
+
 const Review: React.FC<uniqueReview> = (review) => {
     return (
-        <div className="">
-            <p><a href={review.url} target="_blank">REVIEW: onbehalfof: {review.onBehalfOf}</a></p>
-            <img src={review.author.avatarUrl} alt={review.author.login} />
+        <div className={`review state--${review.state}`}>
+            {/* <p>
+                <a href={review.url} target="_blank" rel="noopener noreferrer" >
+                    REVIEW: onbehalfof: {review.onBehalfOf}
+                </a>
+            </p> */}
+            <a href={review.url} target="_blank" rel="noopener noreferrer" >
+                <Img author={review.author} cssClassNames="review-image" />
+            </a>
         </div>
     )
-}
+};
 
 const Pr: React.FC<pullRequest> = (pr) => {
     return (
-        <div className="">
-            <p><a href={pr.url} target="_blank">{pr.title}</a></p>
-            {pr.author && <img src={pr.author.avatarUrl} alt={pr.author.login} />}
-            {pr.reviews.state}
-            {pr.reviews.uniqueReviews.map(( review: uniqueReview ) => <Review {...review} />)}
+        <div className={`pr failed-ci--${pr.isFailing} state--${pr.reviews.state}`}>
+            {pr.author && <Img author={pr.author} cssClassNames="pr-image" />}
+            <div className="pr-title">
+                <a href={pr.url} target="_blank" rel="noopener noreferrer">
+                    {pr.title}
+                </a>
+            </div>
+            
+            <p className="pr-reviews">
+                {pr.reviews.uniqueReviews.map((review: uniqueReview) => <Review {...review} />)}
+            </p>
         </div>
     );
-}
+};
 
 export default Pr;
 
