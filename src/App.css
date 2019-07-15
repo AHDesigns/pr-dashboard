@@ -122,6 +122,8 @@ review
   width: 60px;
 }
 
-.review > img {
-  width: 50px;
+.reviewer-team-image {
+  position: relative;
+  width: 30px;
+  left:-30px;
 }

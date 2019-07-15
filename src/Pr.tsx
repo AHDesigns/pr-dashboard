@@ -17,13 +17,17 @@ const Img: React.FC<{ author: { avatarUrl: string, login: string }, cssClassName
 const Review: React.FC<uniqueReview> = (review) => {
     return (
         <div className={`review state--${review.state}`}>
-            {/* <p>
-                <a href={review.url} target="_blank" rel="noopener noreferrer" >
-                    REVIEW: onbehalfof: {review.onBehalfOf}
-                </a>
-            </p> */}
             <a href={review.url} target="_blank" rel="noopener noreferrer" >
-                <Img author={review.author} cssClassNames="review-image" />
+                {review.onBehalfOf
+                    ? <>
+                        <Img author={review.onBehalfOf} cssClassNames="review-image" />
+                        <Img
+                            author={review.author}
+                            cssClassNames="reviewer-team-image"
+                        />
+                    </>
+                    : <Img author={review.author} cssClassNames="review-image" />
+                }
             </a>
         </div>
     )
