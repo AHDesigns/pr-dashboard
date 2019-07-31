@@ -43,9 +43,13 @@ const Pr: React.FC<pullRequest> = (pr) => {
                 </a>
             </div>
             
-            <p className="pr-reviews">
-                {pr.reviews.uniqueReviews.map((review: uniqueReview) => <Review {...review} />)}
-            </p>
+            <ul className="pr-reviews">
+                {pr.reviews.uniqueReviews.map((review: uniqueReview) => (
+                    <li key={review.author.login}>
+                        <Review  {...review} />
+                    </li>
+                ))}
+            </ul>
         </div>
     );
 };

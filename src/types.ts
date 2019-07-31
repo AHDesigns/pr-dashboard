@@ -6,12 +6,21 @@ export enum reviewStates {
     DISMISSED,
 };
 
-export type prDataRequest = {
+export type PrDataRequest = {
     name: string,
     owner: string,
     prCount: number,
     reviewsCount: number,
 }
+
+export function isPrDataRequest(data: any): data is PrDataRequest {
+    return typeof data === 'object'
+        && typeof data.name === 'string'
+        && typeof data.owner === 'string'
+        && typeof data.prCount === 'number'
+        && typeof data.reviewsCount === 'number'
+}
+
 
 export type prData = {
   name: string,
