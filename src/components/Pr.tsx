@@ -1,7 +1,9 @@
-import React from 'react';
-import { pullRequest, uniqueReview } from './types';
+import React from "react";
+import { IPullRequest, IUniqueReview } from "../types";
 
-const Img: React.FC<{ author: { avatarUrl: string, login: string }, cssClassNames?: string }> = ({ author, cssClassNames }) => {
+const Img: React.FC<{
+    author: { avatarUrl: string, login: string }, cssClassNames?: string,
+}> = ({ author, cssClassNames }) => {
     return (
         <span className="tooltip">
             <img
@@ -11,10 +13,10 @@ const Img: React.FC<{ author: { avatarUrl: string, login: string }, cssClassName
             />
             <div className="tooltip-hover">{author.login}</div>
         </span>
-    )
+    );
 };
 
-const Review: React.FC<uniqueReview> = (review) => {
+const Review: React.FC<IUniqueReview> = (review) => {
     return (
         <div className={`review state--${review.state}`}>
             <a href={review.url} target="_blank" rel="noopener noreferrer" >
@@ -30,10 +32,10 @@ const Review: React.FC<uniqueReview> = (review) => {
                 }
             </a>
         </div>
-    )
+    );
 };
 
-const Pr: React.FC<pullRequest> = (pr) => {
+const Pr: React.FC<IPullRequest> = (pr) => {
     return (
         <div className={`pr failed-ci--${pr.isFailing} state--${pr.reviews.state}`}>
             {pr.author && <Img author={pr.author} cssClassNames="pr-image" />}
@@ -42,9 +44,9 @@ const Pr: React.FC<pullRequest> = (pr) => {
                     {pr.title}
                 </a>
             </div>
-            
+
             <ul className="pr-reviews">
-                {pr.reviews.uniqueReviews.map((review: uniqueReview) => (
+                {pr.reviews.uniqueReviews.map((review: IUniqueReview) => (
                     <li key={review.author.login}>
                         <Review  {...review} />
                     </li>
@@ -55,4 +57,3 @@ const Pr: React.FC<pullRequest> = (pr) => {
 };
 
 export default Pr;
-

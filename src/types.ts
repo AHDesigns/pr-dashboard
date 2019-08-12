@@ -4,52 +4,51 @@ export enum reviewStates {
     APPROVED,
     CHANGES_REQUESTED,
     DISMISSED,
-};
-
-export type PrDataRequest = {
-    name: string,
-    owner: string,
-    prCount: number,
-    reviewsCount: number,
 }
 
-export function isPrDataRequest(data: any): data is PrDataRequest {
-    return typeof data === 'object'
-        && typeof data.name === 'string'
-        && typeof data.owner === 'string'
-        && typeof data.prCount === 'number'
-        && typeof data.reviewsCount === 'number'
+export interface IPrDataRequest {
+    name: string;
+    owner: string;
+    prCount: number;
+    reviewsCount: number;
 }
 
+export function isPrDataRequest(data: any): data is IPrDataRequest {
+    return typeof data === "object"
+        && typeof data.name === "string"
+        && typeof data.owner === "string"
+        && typeof data.prCount === "number"
+        && typeof data.reviewsCount === "number";
+}
 
-export type prData = {
-  name: string,
-  pullRequests: pullRequest[],
+export interface IPrData {
+  name: string;
+  pullRequests: IPullRequest[];
 }
 
 // seems a bit flakey
-export function isPrData(data: any): data is prData {
-    return typeof data === 'object'
-        && typeof data.name === 'string'
+export function isPrData(data: any): data is IPrData {
+    return typeof data === "object"
+        && typeof data.name === "string"
         && Array.isArray(data.pullRequests);
 }
 
-export type pullRequest = {
-    isDraft: boolean,
-    isFailing: boolean,
-    title: string,
-    url: string,
+export interface IPullRequest {
+    isDraft: boolean;
+    isFailing: boolean;
+    title: string;
+    url: string;
     author?: {
         login: string,
         avatarUrl: string,
-    },
+    };
     reviews: {
         state: reviewStates,
-        uniqueReviews: uniqueReview[],
-    }
+        uniqueReviews: IUniqueReview[],
+    };
 }
 
-// export function isPullRequest(arr: undefined[] | pullRequest[]): arr is pullRequest[] {
+// export function isPullRequest(arr: undefined[] | IPullRequest[]): arr is IPullRequest[] {
 //   const first = arr[0];
 //     if (first && first.title && first.author) {
 //         return true
@@ -63,15 +62,15 @@ export type pullRequest = {
 //   return arr.length > 0;
 // }
 
-export type uniqueReview = {
-    state: reviewStates,
-    url: string,
+export interface IUniqueReview {
+    state: reviewStates;
+    url: string;
     author: {
         login: string,
         avatarUrl: string,
-    },
+    };
     onBehalfOf?: {
         login: string,
         avatarUrl: string,
-    },
+    };
 }
