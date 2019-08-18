@@ -1,46 +1,35 @@
 import { constants } from '../constants';
-import { IPrData, IPrDataRequest, isPrData, isPrDataRequest } from '../types';
+import { IPrInfo, isPrInfo } from '../types';
 
-export function getPullRequests(repoData: IPrDataRequest, storePullRequests: (data: IPrData) => void) {
-    fetch(`${constants.baseURL}/reviews`, {
-        body: JSON.stringify(repoData),
-        headers: { 'Content-Type': 'application/json' },
-        method: 'POST',
-    })
-        .then(res => {
-            res.json()
-                .then(data => {
-                    if (isPrData(data)) {
-                        storePullRequests(data);
-                    } else {
-                        console.warn('reviews.request.not.of.type.IPrData', data);
-                    }
-                })
-                .catch(e => console.error('json error', e));
+export function getRepos(): Promise<IPrInfo[]> {
+    return new Promise((resolve, reject) => {
+        fetch(`${constants.baseURL}/repos`, {
+            headers: { 'Content-Type': 'application/json' },
+            method: 'GET',
         })
-        .catch(e => console.error('fetch error', e));
+            .then(res => {
+                res.json()
+                    .then((data: IPrInfo[]) => {
+                        if (data.every(isPrInfo)) {
+                            resolve(data);
+                        } else {
+                            console.warn('repos.request.not.of.type.Repos', data);
+                            reject();
+                        }
+                    })
+                    .catch(e => {
+                        console.error('json error', e);
+                        reject();
+                    });
+            })
+            .catch(e => {
+                console.error('fetch error', e);
+                reject();
+            });
+    });
 }
 
-export function getRepos(storeRepos: (data: IPrDataRequest[]) => void) {
-    fetch(`${constants.baseURL}/repos`, {
-        headers: { 'Content-Type': 'application/json' },
-        method: 'GET',
-    })
-        .then(res => {
-            res.json()
-                .then((data: IPrDataRequest[]) => {
-                    if (data.every(isPrDataRequest)) {
-                        storeRepos(data);
-                    } else {
-                        console.warn('repos.request.not.of.type.Repos', data);
-                    }
-                })
-                .catch(e => console.error('json error', e));
-        })
-        .catch(e => console.error('fetch error', e));
-}
-
-export function putRepos(repos: IPrDataRequest[], storeRepos: (data: IPrDataRequest[]) => void) {
+export function putRepos(repos: IPrInfo[]): void {
     fetch(`${constants.baseURL}/repos`, {
         body: JSON.stringify(repos),
         headers: { 'Content-Type': 'application/json' },
@@ -48,9 +37,11 @@ export function putRepos(repos: IPrDataRequest[], storeRepos: (data: IPrDataRequ
     })
         .then(res => {
             res.json()
-                .then((data: IPrDataRequest[]) => {
-                    if (data.every(isPrDataRequest)) {
-                        storeRepos(data);
+                .then((data: IPrInfo[]) => {
+                    if (data.every(isPrInfo)) {
+                        /* storeRepos(data); */
+                        // TODO dry
+                        console.log('yay')
                     } else {
                         console.warn('repos.request.not.of.type.Repos', data);
                     }
