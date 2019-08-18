@@ -1,19 +1,15 @@
-export enum reviewStates {
-    PENDING,
-    COMMENTED,
-    APPROVED,
-    CHANGES_REQUESTED,
-    DISMISSED,
-}
-
-export interface IPrDataRequest {
+/*
+ * The details relating to a github repo that will be used
+ * by the server to fetch reviews.
+ */
+export type IPrInfo = {
     name: string;
     owner: string;
     prCount: number;
     reviewsCount: number;
-}
+};
 
-export function isPrDataRequest(data: any): data is IPrDataRequest {
+export function isPrInfo(data: any): data is IPrInfo {
     return (
         typeof data === 'object' &&
         typeof data.name === 'string' &&
@@ -28,22 +24,8 @@ export interface IPrData {
     pullRequests: IPullRequest[];
 }
 
-// seems a bit flakey
 export function isPrData(data: any): data is IPrData {
     return typeof data === 'object' && typeof data.name === 'string' && Array.isArray(data.pullRequests);
-}
-
-export enum StatusState {
-    // Status is expected.
-    EXPECTED,
-    // Status is errored.
-    ERROR,
-    // Status is failing.
-    FAILURE,
-    // Status is pending.
-    PENDING,
-    // Status is successful.
-    SUCCESS,
 }
 
 export interface IPullRequest {
@@ -74,6 +56,14 @@ export interface IPullRequest {
     };
 }
 
+export enum reviewStates {
+    PENDING,
+    COMMENTED,
+    APPROVED,
+    CHANGES_REQUESTED,
+    DISMISSED,
+}
+
 export interface IUniqueReview {
     state: reviewStates;
     url: string;
@@ -85,4 +75,12 @@ export interface IUniqueReview {
         login: string;
         avatarUrl: string;
     };
+}
+
+export enum StatusState {
+    EXPECTED,
+    ERROR,
+    FAILURE,
+    PENDING,
+    SUCCESS,
 }

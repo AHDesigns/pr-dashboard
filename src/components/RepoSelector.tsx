@@ -1,16 +1,32 @@
 import React, { useEffect, useState } from 'react';
-import { IPrDataRequest } from '../types';
+import { IPrInfo } from '../types';
 import { getRepos, putRepos } from '../utils/fetchWrappers';
 
-const initialAvailableRepos: IPrDataRequest[] = [];
+type decoratedPrInfo = IPrInfo & {
+    selected: boolean;
+};
+
+const initialAvailableRepos: decoratedPrInfo[] = [];
+
 export const RepoInfo: React.FC<{
     subscribedRepos: string[];
     setSubscribedRepos: (data: string[]) => void;
 }> = ({ setSubscribedRepos, subscribedRepos }) => {
     const [availableRepos, setAvailableRepos] = useState(initialAvailableRepos);
-    useEffect(() => getRepos(setAvailableRepos), []);
 
-    const newRepo: IPrDataRequest = {
+    useEffect(() => {
+        getRepos()
+            .then(availableReposFromServer => {
+                const decoratedPrs: decoratedPrInfo[] = availableReposFromServer.map(repo => ({
+                    ...repo,
+                    selected: subscribedRepos.includes(repo.name),
+                }));
+                setAvailableRepos(decoratedPrs);
+            })
+            .catch();
+    }, []);
+
+    const newRepo: IPrInfo = {
         name: '',
         owner: '',
         prCount: 1,
@@ -21,7 +37,7 @@ export const RepoInfo: React.FC<{
         <>
             {availableRepos.map(repo => (
                 <div key={repo.name}>
-                    <input type="checkbox" value={repo.name} onClick={subscribeToRepo} />
+                    <input checked={repo.selected} type="checkbox" value={repo.name} onChange={subscribeToRepo} />
                     <p>
                         {repo.name}: {repo.owner}
                     </p>
@@ -29,14 +45,23 @@ export const RepoInfo: React.FC<{
             ))}
             <button
                 onClick={() => {
-                    putRepos([newRepo], setAvailableRepos);
+                    putRepos([newRepo]);
                 }}
             >
                 Add Repo
             </button>
             <button
                 onClick={() => {
-                    getRepos(setAvailableRepos);
+                    // TODO: dry
+                    getRepos()
+                        .then(availableReposFromServer => {
+                            const decoratedPrs: decoratedPrInfo[] = availableReposFromServer.map(repo => ({
+                                ...repo,
+                                selected: subscribedRepos.includes(repo.name),
+                            }));
+                            setAvailableRepos(decoratedPrs);
+                        })
+                        .catch();
                 }}
             >
                 Refresh RepoInfo
@@ -44,25 +69,17 @@ export const RepoInfo: React.FC<{
         </>
     );
 
-    function subscribeToRepo(e: React.MouseEvent<HTMLInputElement>): void {
+    function subscribeToRepo(e: React.ChangeEvent<HTMLInputElement>): void {
         const { value, checked } = e.currentTarget;
-        if (checked) {
-            const repos = dedupeA(subscribedRepos.concat(e.currentTarget.value));
-            window.localStorage.setItem('subscribedRepos', JSON.stringify(repos));
-            setSubscribedRepos(repos);
-        } else {
-            setSubscribedRepos(dedupeA(subscribedRepos).filter(repo => repo !== value));
-        }
+        const repos = availableRepos.map(repo => ({
+            ...repo,
+            selected: repo.name === value ? checked : repo.selected,
+        }));
+
+        setAvailableRepos(repos);
+        const selectedRepos = repos.filter(repo => repo.selected).map(repo => repo.name);
+
+        setSubscribedRepos(selectedRepos);
+        window.localStorage.setItem('subscribedRepos', JSON.stringify(selectedRepos));
     }
 };
-
-function dedupeA<T>(arr: T[]): T[] {
-    return arr.reduce(dedupe, []);
-
-    function dedupe<TT>(all: TT[], cur: any): TT[] {
-        if (all.includes(cur)) {
-            return all;
-        }
-        return all.concat(cur);
-    }
-}
