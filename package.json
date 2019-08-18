@@ -19,7 +19,7 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "lint:fix": "tslint --fix src/**/*.{ts,tsx}"
+    "lint:fix": "eslint --fix src/**/*.{ts,tsx}"
   },
   "eslintConfig": {
     "extends": "react-app"
@@ -38,6 +38,12 @@
   },
   "devDependencies": {
     "@types/socket.io-client": "^1.4.32",
-    "tslint": "^5.18.0"
+    "@typescript-eslint/eslint-plugin": "^2.0.0",
+    "@typescript-eslint/parser": "^2.0.0",
+    "eslint": "^5.9.0",
+    "eslint-config-prettier": "^6.0.0",
+    "eslint-plugin-prettier": "^3.1.0",
+    "eslint-plugin-react": "^7.14.3",
+    "prettier": "^1.18.2"
   }
 }
