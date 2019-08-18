@@ -14,17 +14,7 @@ export const RepoInfo: React.FC<{
 }> = ({ setSubscribedRepos, subscribedRepos }) => {
     const [availableRepos, setAvailableRepos] = useState(initialAvailableRepos);
 
-    useEffect(() => {
-        getRepos()
-            .then(availableReposFromServer => {
-                const decoratedPrs: decoratedPrInfo[] = availableReposFromServer.map(repo => ({
-                    ...repo,
-                    selected: subscribedRepos.includes(repo.name),
-                }));
-                setAvailableRepos(decoratedPrs);
-            })
-            .catch();
-    }, []);
+    useEffect(() => updateRepos(), []);
 
     const newRepo: IPrInfo = {
         name: '',
@@ -43,31 +33,22 @@ export const RepoInfo: React.FC<{
                     </p>
                 </div>
             ))}
-            <button
-                onClick={() => {
-                    putRepos([newRepo]);
-                }}
-            >
-                Add Repo
-            </button>
-            <button
-                onClick={() => {
-                    // TODO: dry
-                    getRepos()
-                        .then(availableReposFromServer => {
-                            const decoratedPrs: decoratedPrInfo[] = availableReposFromServer.map(repo => ({
-                                ...repo,
-                                selected: subscribedRepos.includes(repo.name),
-                            }));
-                            setAvailableRepos(decoratedPrs);
-                        })
-                        .catch();
-                }}
-            >
-                Refresh RepoInfo
-            </button>
+            <button onClick={(): void => putRepos([newRepo])}>Add Repo</button>
+            <button onClick={(): void => updateRepos()}>Refresh RepoInfo</button>
         </>
     );
+
+    function updateRepos(): void {
+        getRepos()
+            .then(availableReposFromServer => {
+                const decoratedPrs: decoratedPrInfo[] = availableReposFromServer.map(repo => ({
+                    ...repo,
+                    selected: subscribedRepos.includes(repo.name),
+                }));
+                setAvailableRepos(decoratedPrs);
+            })
+            .catch();
+    }
 
     function subscribeToRepo(e: React.ChangeEvent<HTMLInputElement>): void {
         const { value, checked } = e.currentTarget;
