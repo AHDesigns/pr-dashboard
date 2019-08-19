@@ -32,7 +32,7 @@ const Review: React.FC<IUniqueReview> = review => {
 
 const Pr: React.FC<IPullRequest> = pr => {
     return (
-        <div className={`pr state--${pr.reviews.state}`}>
+        <div className={`pr status--${pr.statuses.status.state}`}>
             {pr.author && <Img author={pr.author} cssClassNames="pr-image" />}
             <div className="pr-title">
                 <a href={pr.url} target="_blank" rel="noopener noreferrer">

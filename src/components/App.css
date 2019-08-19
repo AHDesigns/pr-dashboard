@@ -115,6 +115,12 @@ pr
   background-color: #ff9966;
 }
 
+.status--EXPECTED { border-bottom: thick solid pink; }
+.status--ERROR { border-bottom: thick solid orange; }
+.status--FAILURE { border-bottom: thick solid red; }
+.status--PENDING { border-bottom: thick solid yellow; }
+.status--SUCCESS { border-bottom: thick solid green; }
+
 /**************************************************
 review
 **************************************************/
