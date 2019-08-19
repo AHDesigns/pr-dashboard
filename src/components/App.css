@@ -53,12 +53,15 @@ repo
   color: white;
 } */
 
+.repos {
+    display: flex;
+    flex-direction: row;
+}
+
 /**************************************************
 repo
 **************************************************/
 .repo {
-  width: 100%;
-  /* margin: 10px; */
   border: red solid thin;
 }
 .repo-title {

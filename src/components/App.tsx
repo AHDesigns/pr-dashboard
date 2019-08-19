@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import './App.css';
 import { IPrData } from '../types';
-import { Provider } from './SocketProvider';
+import { Provider } from './Socket';
 import { RepoInfo } from './RepoSelector';
 import Repo from './Repo';
 
