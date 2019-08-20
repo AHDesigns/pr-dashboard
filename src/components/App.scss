@@ -1,0 +1,185 @@
+$col-fg: #eff0eb;
+$col-bg: #282a36;
+$col-bg-l: #33343f;
+$col-red: #ff5c57;
+$col-green: #5af78e;
+$col-yellow: #f3f99d;
+$col-blue: #57c7ff;
+$col-magenta: #ff6ac1;
+$col-cyan: #9aedfe;
+
+/**************************************************
+elements
+**************************************************/
+body {
+    background: $col-bg;
+    color: $col-fg;
+}
+
+h2 {
+    color: $col-magenta;
+}
+
+a {
+    color: $col-blue;
+    text-decoration: none;
+}
+
+button {
+    background-color: $col-bg;
+    color: $col-magenta;
+    border: thin solid $col-magenta;
+    border-radius: 6px;
+    padding: 10px;
+    font-size: 16px;
+}
+
+/**************************************************
+tooltip
+**************************************************/
+.tooltip-hover {
+  visibility: hidden;
+  width: 120px;
+  background-color: $col-cyan;
+  color: $col-bg;
+  text-align: center;
+  padding: 5px 0;
+  border-radius: 6px;
+ 
+  /* Position the tooltip text - see examples below! */
+  position: absolute;
+  z-index: 1;
+}
+
+.tooltip:hover .tooltip-hover {
+  visibility: visible;
+}
+
+/**************************************************
+app
+**************************************************/
+.App {
+  text-align: left;
+  // padding: 10px;
+}
+
+/* .App-header {
+  background-color: #282c34;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: calc(10px + 2vmin);
+  color: white;
+} */
+
+.repos {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+}
+
+/**************************************************
+repo-selctor
+**************************************************/
+.repo-selector {
+}
+
+.repo-selector li {
+    display: flex;
+    flex-direction: row;
+}
+
+/**************************************************
+repo
+**************************************************/
+.repo {
+  // border: red solid thin;
+    // padding: 0 10px;
+    margin: 0 20px;
+    flex-grow: 1;
+    flex-shrink: 0;
+}
+.repo-title {
+  text-align: center;
+  font-size: 24px;
+}
+
+// .repo-item {
+//   width: 80%;
+//   margin-bottom: 10px;
+// }
+/**************************************************
+pr
+**************************************************/
+.pr {
+  margin-bottom: 10px;
+  width: 100%;
+  background-color: $col-bg-l;
+
+  // border: #61dafb thin solid;
+  border-radius: 6px;
+  box-shadow: 0px 1px 3px 0px rgba(0,0,0,0.2), 0px 1px 1px 0px rgba(0,0,0,0.14), 0px 2px 1px -1px rgba(0,0,0,0.12);
+
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.pr-image {
+  height: 70px;
+  margin: 5px;
+  /* width: 20px; */
+  /* position: relative; */
+  /* right: 10%; */
+}
+
+.pr-title {
+  flex-grow: 1;
+}
+
+.pr-reviews {
+  display: flex;
+  flex-direction: row;
+}
+
+.state--PENDING {
+  border-bottom: thick solid $col-yellow;
+}
+/* .pr-state--COMMENTED {
+  border-bottom: thick solid red;
+} */
+.state--APPROVED {
+  border-bottom: thick solid $col-green;
+}
+.state--CHANGES_REQUESTED {
+  border-bottom: thick solid $col-red;
+}
+
+// .failed-ci--true {
+//   background-color: #ff9966;
+// }
+
+.status--EXPECTED { border-left: thick solid $col-cyan; }
+.status--ERROR { border-left: thick solid $col-blue; }
+.status--FAILURE { border-left: thick solid $col-red; }
+.status--PENDING { border-left: thick solid $col-yellow; }
+.status--SUCCESS { border-left: thick solid $col-green; }
+
+/**************************************************
+review
+**************************************************/
+.review {
+  float: left;
+}
+
+.review-image {
+  width: 60px;
+}
+
+.reviewer-team-image {
+  position: relative;
+  width: 30px;
+  left:-30px;
+}

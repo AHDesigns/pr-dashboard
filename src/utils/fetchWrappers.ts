@@ -29,7 +29,7 @@ export function getRepos(): Promise<IPrInfo[]> {
     });
 }
 
-export function putRepos(repos: IPrInfo[]): void {
+export function putRepos(repos: IPrInfo[], cb: () => void): void {
     fetch(`${constants.baseURL}/repos`, {
         body: JSON.stringify(repos),
         headers: { 'Content-Type': 'application/json' },
@@ -39,9 +39,7 @@ export function putRepos(repos: IPrInfo[]): void {
             res.json()
                 .then((data: IPrInfo[]) => {
                     if (data.every(isPrInfo)) {
-                        /* storeRepos(data); */
-                        // TODO dry
-                        console.log('yay')
+                        cb();
                     } else {
                         console.warn('repos.request.not.of.type.Repos', data);
                     }
