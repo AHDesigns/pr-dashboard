@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import './App.css';
+import './App.scss';
 import { IPrData } from '../types';
 import { Provider } from './Socket';
 import { RepoInfo } from './RepoSelector';
