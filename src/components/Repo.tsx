@@ -5,7 +5,7 @@ import Pr from './Pr';
 const Repo: React.FC<{ reposData: IPrData }> = ({ reposData }) => {
     return (
         <div className="repo">
-            <p className="repo-title">NAME: {reposData.name}</p>
+            <p className="repo-title">{reposData.name}</p>
             <ul>
                 {reposData.pullRequests.length > 0 &&
                     reposData.pullRequests
