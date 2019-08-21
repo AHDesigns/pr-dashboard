@@ -31,7 +31,7 @@ export function isPrData(data: any): data is IPrData {
 export interface IPullRequest {
     isDraft: boolean;
     mergeStateStatus: string;
-    mergeable: string;
+    mergeable: Mergeable;
     title: string;
     url: string;
     author?: {
@@ -83,4 +83,10 @@ export enum StatusState {
     FAILURE,
     PENDING,
     SUCCESS,
+}
+
+export enum Mergeable {
+    CONFLICTING,
+    MERGEABLE,
+    UNKNOWN,
 }

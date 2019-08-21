@@ -1,5 +1,6 @@
 import React from 'react';
 import { IPullRequest, IUniqueReview } from '../types';
+import GitMerge from '../git-merge';
 
 const Img: React.FC<{
     author: { avatarUrl: string; login: string };
@@ -18,10 +19,7 @@ const Review: React.FC<IUniqueReview> = review => {
         <div className={`review state--${review.state}`}>
             <a href={review.url} target="_blank" rel="noopener noreferrer">
                 {review.onBehalfOf ? (
-                    <>
-                        <Img author={review.onBehalfOf} cssClassNames="review-image" />
-                        <Img author={review.author} cssClassNames="reviewer-team-image" />
-                    </>
+                    <Img author={review.onBehalfOf} cssClassNames="review-image" />
                 ) : (
                     <Img author={review.author} cssClassNames="review-image" />
                 )}
@@ -33,18 +31,23 @@ const Review: React.FC<IUniqueReview> = review => {
 const Pr: React.FC<IPullRequest> = pr => {
     return (
         <div className={`pr status--${pr.statuses.status.state}`}>
-            {pr.author && <Img author={pr.author} cssClassNames="pr-image" />}
-            <div className="pr-title">
-                <a href={pr.url} target="_blank" rel="noopener noreferrer">
-                    {pr.title}
-                </a>
-                <p>
-                    mergeState: {pr.mergeStateStatus}
-                    <br />
-                    mergable: {pr.mergeable}
-                    <br />
-                    passing: {pr.statuses.status.state}
-                </p>
+            <div className="pr-image">{pr.author && <Img author={pr.author} />}</div>
+            <div className="pr-info">
+                <div className="pr-title">
+                    <a href={pr.url} target="_blank" rel="noopener noreferrer">
+                        {pr.title}
+                    </a>
+                </div>
+
+                <div className="pr-statuses">
+                    <p style={{ color: 'white' }}>
+                        Mergeable:{' '}
+                        <GitMerge className={`merge-icon status--${pr.mergeable}`} />
+                        |
+                        Checks:{' '}
+                        <span className={`status--${pr.statuses.status.state}`}>{pr.statuses.status.state}</span>
+                    </p>
+                </div>
             </div>
 
             <ul className="pr-reviews">
