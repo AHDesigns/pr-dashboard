@@ -29,6 +29,8 @@ export function isPrData(data: any): data is IPrData {
 }
 
 export interface IPullRequest {
+    id: string;
+    createdAt: string;
     isDraft: boolean;
     mergeStateStatus: string;
     mergeable: Mergeable;
@@ -42,10 +44,13 @@ export interface IPullRequest {
         state: reviewStates;
         uniqueReviews: IUniqueReview[];
     };
+    reviewRequests: {
+        nodes: IReviewRequest[];
+    };
     statuses: {
         commitUrl: string;
         message: string;
-        status: {
+        status?: {
             contexts: {
                 description: string;
                 avatarUrl: string;
@@ -55,6 +60,17 @@ export interface IPullRequest {
         };
     };
 }
+
+export type IReviewRequest = {
+    requestedReviewer: UserReview | TeamReview;
+};
+
+export function isUserReview(data: UserReview | TeamReview): data is UserReview {
+    return (data as UserReview).userName !== undefined;
+}
+
+export type UserReview = { userName: string; avatarUrl: string };
+export type TeamReview = { teamName: string; avatarUrl: string };
 
 export enum reviewStates {
     PENDING,
