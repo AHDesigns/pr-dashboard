@@ -81,7 +81,7 @@ app
 } */
 
 .repos {
-    width: 100%;
+    width: 95vw;
     display: flex;
     flex-direction: row;
     justify-content: space-around;
@@ -107,8 +107,8 @@ repo
     // border: red solid thin;
     // padding: 0 10px;
     // margin: 0 20px;
-    flex-grow: 0;
-    flex-shrink: 0;
+    /* flex-grow: 1; */
+    /* flex-shrink: 1; */
 }
 .repo-title {
     text-align: center;
@@ -151,6 +151,8 @@ pr
     height: 70px;
     width: 70px;
     border-radius: 35px;
+    flex-basis: 70px;
+    flex-shrink: 0;
 
     img {
         border-radius: 35px;
@@ -162,10 +164,19 @@ pr
 }
 .pr-statuses {
     font-size: 12px;
+    color: $col-fg;
+    display: flex;
+    flex-direction: row;
+    align-items: baseline;
+
+    li {
+        margin-right: 10px;
+    }
 }
 
 .pr-title {
     // flex-grow: 1;
+    max-width: 500px;
 }
 
 .pr-reviews {
@@ -173,6 +184,7 @@ pr
     display: flex;
     flex-direction: row;
     margin-right: 10px;
+    flex-basis: 50px;
 
     li {
         width: 40px;
@@ -189,9 +201,9 @@ review
 }
 
 .review-image {
-    width: 36px;
-    border-radius: 18px;
-    margin: 2px 0 0 2px;
+    width: 32px;
+    border-radius: 16px;
+    margin: 3.5px 0 2px 4px;
 }
 
 .reviewer-team-image {
