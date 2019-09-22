@@ -1,6 +1,8 @@
-import React, { useEffect, useState } from 'react';
-import { IPrInfo } from '../types';
+import React, { useEffect, useState, Dispatch } from 'react';
+import { IPrInfo, TRepoUserFilters, TUser } from '../types';
 import { getRepos, putRepos } from '../utils/fetchWrappers';
+import Autocomplete from './Autocomplete';
+import { filterAction } from './App';
 
 type decoratedPrInfo = IPrInfo & {
     selected: boolean;
@@ -71,12 +73,67 @@ const RepoForm: React.FC<{ updateRepos: () => void }> = ({ updateRepos }) => {
     );
 };
 
+const TeamFilter: React.FC<{
+    users: TUser[];
+    repoUserFilters: TRepoUserFilters;
+    setRepoUserFilters: Dispatch<filterAction>;
+}> = ({ users, repoUserFilters, setRepoUserFilters }) => {
+    return (
+        <div>
+            <Autocomplete suggestions={users} setRepoUserFilters={setRepoUserFilters} />
+            <ul>
+                {Object.entries(repoUserFilters).map(([repo, repoData]) => {
+                    return (
+                        <li key={repo}>
+                            {repo} {repoData.whitelist ? 'whitelist' : 'blacklist'}
+                            <br />
+                            <ul>
+                                {repoData.users.map(user => (
+                                    <li key={user.id}>
+                                        {user.login} {user.name}
+                                    </li>
+                                ))}
+                            </ul>
+                        </li>
+                    );
+                })}
+            </ul>
+        </div>
+    );
+
+    /* return (
+     *     <form
+     *         onSubmit={(e): void => {
+     *             e.preventDefault();
+     *             repoUserFilters.all.whitelist = true;
+     *             repoUserFilters.all.users.push(users[0]);
+     *             setRepoUserFilters(repoUserFilters);
+     *             setName('');
+     *         }}
+     *     >
+     *         <label>
+     *             User:
+     *             <input
+     *                 type="text"
+     *                 value={name}
+     *                 onChange={e => {
+     *                     setName(e.target.value);
+     *                 }}
+     *             />
+     *         </label>
+     *     </form>
+     * ); */
+};
+
 const initialAvailableRepos: decoratedPrInfo[] = [];
 
 export const RepoInfo: React.FC<{
+    users: TUser[];
     subscribedRepos: string[];
     setSubscribedRepos: (data: string[]) => void;
-}> = ({ setSubscribedRepos, subscribedRepos }) => {
+    repoUserFilters: TRepoUserFilters;
+    setRepoUserFilters: Dispatch<filterAction>;
+}> = ({ setSubscribedRepos, subscribedRepos, users, repoUserFilters, setRepoUserFilters }) => {
     const [availableRepos, setAvailableRepos] = useState(initialAvailableRepos);
 
     useEffect(() => updateRepos(), []);
@@ -106,6 +163,8 @@ export const RepoInfo: React.FC<{
                 <button onClick={(): void => updateRepos()}>Refresh RepoInfo</button>
                 <h2>Add Repo:</h2>
                 <RepoForm updateRepos={updateRepos} />
+                <h2>Create Team Filter:</h2>
+                <TeamFilter users={users} repoUserFilters={repoUserFilters} setRepoUserFilters={setRepoUserFilters} />
             </div>
         </div>
     );

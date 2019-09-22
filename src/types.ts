@@ -106,3 +106,38 @@ export enum Mergeable {
     MERGEABLE,
     UNKNOWN,
 }
+
+export type TPr = {
+    id: string;
+    createdAt: string;
+    isDraft: boolean;
+    title: string;
+    url: string;
+    author: {
+        login: string;
+        avatarUrl: string;
+    };
+};
+
+export type TPrHistory = {
+    name: string;
+    prs?: TPr[];
+};
+
+export function isTPrHistory(data: any): data is TPrHistory {
+    return typeof data === 'object' && typeof data.name === 'string' && Array.isArray(data.prs);
+}
+
+export type TUser = {
+    name?: string;
+    avatarUrl: string;
+    id: string;
+    login: string;
+};
+
+export type TRepoUserFilters = {
+    [repoName: string]: {
+        whitelist: boolean;
+        users: TUser[];
+    };
+};
