@@ -18,6 +18,7 @@ const intialRepoUserFilters: TRepoUserFilters = {
 
 export type filterAction =
     | { type: 'addUser'; data: { repo: string; user: TUser } }
+    | { type: 'removeUser'; data: { repo: string; user: TUser } }
     | { type: 'setWhitelist'; data: { repo: string; whitelist: boolean } };
 
 function filterReducer(state: TRepoUserFilters, action: filterAction): TRepoUserFilters {
@@ -29,6 +30,16 @@ function filterReducer(state: TRepoUserFilters, action: filterAction): TRepoUser
                 [repo]: {
                     ...state[repo],
                     whitelist,
+                },
+            };
+        }
+        case 'removeUser': {
+            const { repo, user } = action.data;
+            return {
+                ...state,
+                [repo]: {
+                    ...state[repo],
+                    users: state[repo].users.filter(usr => usr !== user),
                 },
             };
         }
@@ -70,7 +81,9 @@ const App: React.FC = () => {
             />
             <Provider subscribedRepos={subscribedRepos}>
                 {(reposData: IPrData[]): JSX.Element[] =>
-                    reposData.map(data => <Repository key={data.name} reposData={data} repoUserFilters={repoUserFilters} />)
+                    reposData.map(data => (
+                        <Repository key={data.name} reposData={data} repoUserFilters={repoUserFilters} />
+                    ))
                 }
             </Provider>
             {/* <PrHistory /> */}

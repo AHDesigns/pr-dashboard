@@ -91,6 +91,13 @@ const TeamFilter: React.FC<{
                                 {repoData.users.map(user => (
                                     <li key={user.id}>
                                         {user.login} {user.name}
+                                        <button
+                                            onClick={() =>
+                                                setRepoUserFilters({ type: 'removeUser', data: { repo: 'all', user } })
+                                            }
+                                        >
+                                            X
+                                        </button>
                                     </li>
                                 ))}
                             </ul>
@@ -100,29 +107,6 @@ const TeamFilter: React.FC<{
             </ul>
         </div>
     );
-
-    /* return (
-     *     <form
-     *         onSubmit={(e): void => {
-     *             e.preventDefault();
-     *             repoUserFilters.all.whitelist = true;
-     *             repoUserFilters.all.users.push(users[0]);
-     *             setRepoUserFilters(repoUserFilters);
-     *             setName('');
-     *         }}
-     *     >
-     *         <label>
-     *             User:
-     *             <input
-     *                 type="text"
-     *                 value={name}
-     *                 onChange={e => {
-     *                     setName(e.target.value);
-     *                 }}
-     *             />
-     *         </label>
-     *     </form>
-     * ); */
 };
 
 const initialAvailableRepos: decoratedPrInfo[] = [];

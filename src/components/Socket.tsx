@@ -25,6 +25,9 @@ export class Provider extends React.Component<IProps, IState> {
 
     componentDidMount(): void {
         const { socket } = this.state;
+        socket.emit('connected');
+        socket.on('connected', console.log);
+
         socket.emit('availableRepos', this.props.subscribedRepos);
 
         socket.on('connect', () => {
