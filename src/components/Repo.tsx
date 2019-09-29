@@ -2,17 +2,30 @@ import React from 'react';
 import { IPrData, IPullRequest, TRepoUserFilters } from '../types';
 import Pr from './Pr';
 
-const filteredUsers = (repoUserFilters: TRepoUserFilters) => {
-    const users = repoUserFilters.all.users.map(u => u.login);
-    const { whitelist } = repoUserFilters.all;
+const filteredUsers = (repoUserFilters: TRepoUserFilters, repoName: string) => {
+    const allUsers = repoUserFilters.all.users.map(u => u.login);
+    const { whitelist: allWhitelist } = repoUserFilters.all;
+
+    const hasRepoFilters = Boolean(repoUserFilters[repoName]);
+
+    let users: string[];
+    let whitelist: boolean;
+    if (hasRepoFilters) {
+        users = repoUserFilters[repoName].users.map(u => u.login);
+        whitelist = repoUserFilters[repoName].whitelist;
+    }
 
     return (user: string): boolean => {
-        return whitelist ? users.includes(user) : !users.includes(user);
+        if (hasRepoFilters) {
+            return whitelist ? users.includes(user) : !users.includes(user);
+        }
+
+        return allWhitelist ? allUsers.includes(user) : !allUsers.includes(user);
     };
 };
 
 const Repo: React.FC<{ reposData: IPrData; repoUserFilters: TRepoUserFilters }> = ({ reposData, repoUserFilters }) => {
-    const validUser = filteredUsers(repoUserFilters);
+    const validUser = filteredUsers(repoUserFilters, reposData.name);
     return (
         <div className="repo">
             <p className="repo-title">

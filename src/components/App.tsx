@@ -22,34 +22,53 @@ export type filterAction =
     | { type: 'setWhitelist'; data: { repo: string; whitelist: boolean } };
 
 function filterReducer(state: TRepoUserFilters, action: filterAction): TRepoUserFilters {
+    console.log('filters: ', action, state);
+
     switch (action.type) {
         case 'setWhitelist': {
             const { repo, whitelist } = action.data;
+            console.log('filters setWhitelist: ', repo, whitelist);
             return {
                 ...state,
                 [repo]: {
-                    ...state[repo],
+                    ...(state[repo] || {}),
                     whitelist,
                 },
             };
         }
         case 'removeUser': {
             const { repo, user } = action.data;
+
+            console.log('filters remove: ', repo, user);
             return {
                 ...state,
                 [repo]: {
-                    ...state[repo],
+                    ...(state[repo] || {}),
                     users: state[repo].users.filter(usr => usr !== user),
                 },
             };
         }
         case 'addUser': {
-            const { repo, user } = action.data;
+            const { repo: repoName, user } = action.data;
+
+            if (!user) {
+                console.log('filters add: no user - bailing');
+                return state;
+            }
+
+            const repo = state[repoName] || { whitelist: true, users: [] };
+
+            if (repo.users.find(usr => usr === user)) {
+                console.log('filters add: ignored existing user', repo, user);
+                return state;
+            }
+
+            console.log('filters add: ', repo, user);
             return {
                 ...state,
-                [repo]: {
-                    ...state[repo],
-                    users: [...state[repo].users, user],
+                [repoName]: {
+                    ...repo,
+                    users: [...repo.users, user],
                 },
             };
         }

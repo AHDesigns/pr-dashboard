@@ -77,15 +77,35 @@ const TeamFilter: React.FC<{
     users: TUser[];
     repoUserFilters: TRepoUserFilters;
     setRepoUserFilters: Dispatch<filterAction>;
-}> = ({ users, repoUserFilters, setRepoUserFilters }) => {
+    subscribedRepos: string[];
+}> = ({ users, repoUserFilters, setRepoUserFilters, subscribedRepos }) => {
+    const [repoToFilter, setRepoToFilter] = useState('all');
     return (
         <div>
-            <Autocomplete suggestions={users} setRepoUserFilters={setRepoUserFilters} />
+            Select a repo to filter:
+            <select onChange={e => setRepoToFilter(e.currentTarget.value)}>
+                {['all', ...subscribedRepos].map(repo => (
+                    <option key={repo} value={repo}>
+                        {repo}
+                    </option>
+                ))}
+            </select>
+            <Autocomplete repoToFilter={repoToFilter} suggestions={users} setRepoUserFilters={setRepoUserFilters} />
             <ul>
                 {Object.entries(repoUserFilters).map(([repo, repoData]) => {
                     return (
                         <li key={repo}>
-                            {repo} {repoData.whitelist ? 'whitelist' : 'blacklist'}
+                            {repo}
+                            <button
+                                onClick={() =>
+                                    setRepoUserFilters({
+                                        type: 'setWhitelist',
+                                        data: { repo, whitelist: !repoData.whitelist },
+                                    })
+                                }
+                            >
+                                {repoData.whitelist ? 'whitelist' : 'blacklist'}
+                            </button>
                             <br />
                             <ul>
                                 {repoData.users.map(user => (
@@ -93,7 +113,7 @@ const TeamFilter: React.FC<{
                                         {user.login} {user.name}
                                         <button
                                             onClick={() =>
-                                                setRepoUserFilters({ type: 'removeUser', data: { repo: 'all', user } })
+                                                setRepoUserFilters({ type: 'removeUser', data: { repo, user } })
                                             }
                                         >
                                             X
@@ -148,7 +168,12 @@ export const RepoInfo: React.FC<{
                 <h2>Add Repo:</h2>
                 <RepoForm updateRepos={updateRepos} />
                 <h2>Create Team Filter:</h2>
-                <TeamFilter users={users} repoUserFilters={repoUserFilters} setRepoUserFilters={setRepoUserFilters} />
+                <TeamFilter
+                    subscribedRepos={subscribedRepos}
+                    users={users}
+                    repoUserFilters={repoUserFilters}
+                    setRepoUserFilters={setRepoUserFilters}
+                />
             </div>
         </div>
     );

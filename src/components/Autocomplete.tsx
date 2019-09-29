@@ -5,6 +5,7 @@ import { filterAction } from './App';
 interface IProps {
     suggestions: TUser[];
     setRepoUserFilters: Dispatch<filterAction>;
+    repoToFilter: string;
 }
 
 interface IState {
@@ -73,13 +74,14 @@ class Autocomplete extends Component<IProps, IState> {
             this.setState({
                 activeSuggestion: 0,
                 showSuggestions: false,
+                filteredSuggestions: [],
                 userInput: '',
             });
 
             this.props.setRepoUserFilters({
                 type: 'addUser',
                 data: {
-                    repo: 'all',
+                    repo: this.props.repoToFilter,
                     user: filteredSuggestions[activeSuggestion],
                 },
             });
