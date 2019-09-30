@@ -91,11 +91,17 @@ const TeamFilter: React.FC<{
                 ))}
             </select>
             <Autocomplete repoToFilter={repoToFilter} suggestions={users} setRepoUserFilters={setRepoUserFilters} />
+            <button onClick={() => setRepoUserFilters({ type: 'whitelistApp', data: { repo: repoToFilter } })}>
+                whitelist all users for {repoToFilter}
+            </button>
             <ul>
                 {Object.entries(repoUserFilters).map(([repo, repoData]) => {
                     return (
                         <li key={repo}>
                             {repo}
+                            <button onClick={() => setRepoUserFilters({ type: 'removeRepo', data: { repo } })}>
+                                Remove Repo Filter
+                            </button>
                             <button
                                 onClick={() =>
                                     setRepoUserFilters({
