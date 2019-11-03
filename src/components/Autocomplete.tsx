@@ -33,7 +33,7 @@ class Autocomplete extends Component<IProps, IState> {
 
     // Event fired when the input value is changed
     onChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
-        const { suggestions } = this.props;
+        const { suggestions = [] } = this.props;
         const userInput = e.currentTarget.value;
 
         // Filter out suggestion names or logins that don't contain the user's input
