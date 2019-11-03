@@ -39,51 +39,59 @@ const Requested: React.FC<IReviewRequest> = ({ requestedReviewer }) => {
     );
 };
 
-const Pr: React.FC<IPullRequest> = pr => {
-    const status = pr.statuses.status ? pr.statuses.status.state : 'PENDING';
-    return (
-        <div className="pr">
-            <div className="pr-image">{pr.author ? <Img author={pr.author} /> : <img src={octocat} />}</div>
-            <div className="pr-info">
-                <div className="pr-title">
-                    <a href={pr.url} target="_blank" rel="noopener noreferrer">
-                        {pr.title}
-                    </a>
+export default class Pr extends React.Component<IPullRequest> {
+    shouldComponentUpdate(nextProps: IPullRequest): boolean {
+        return this.props.boardStatus !== nextProps.boardStatus;
+    }
+
+    render(): React.ReactChild {
+        const pr = this.props;
+        const status = pr.statuses.status ? pr.statuses.status.state : 'PENDING';
+        return (
+            <li className="repo-item">
+                <div className="pr">
+                    <div className="pr-image">{pr.author ? <Img author={pr.author} /> : <img src={octocat} />}</div>
+                    <div className="pr-info">
+                        <div className="pr-title">
+                            <a href={pr.url} target="_blank" rel="noopener noreferrer">
+                                {pr.title}
+                            </a>
+                        </div>
+
+                        <ul className="pr-statuses">
+                            <li>
+                                {pr.mergeable.toLocaleString().toLowerCase()}:{' '}
+                                <GitMerge className={`merge-icon status--${pr.mergeable}`} />
+                            </li>
+                            <li>
+                                Checks:{' '}
+                                <span className={`status--${status}`}>{status.toLocaleString().toLowerCase()}</span>
+                            </li>
+                            <li>
+                                Created:{' '}
+                                {new Date(pr.createdAt).toLocaleString('en-UK', {
+                                    year: 'numeric',
+                                    month: 'short',
+                                    day: 'numeric',
+                                })}
+                            </li>
+                        </ul>
+                    </div>
+
+                    <ul className="pr-reviews">
+                        {pr.reviewRequests.nodes.map((request: IReviewRequest) => (
+                            <li key={request.requestedReviewer.avatarUrl}>
+                                <Requested {...request} />
+                            </li>
+                        ))}
+                        {pr.reviews.uniqueReviews.map((review: IUniqueReview) => (
+                            <li key={review.author.login}>
+                                <Review {...review} />
+                            </li>
+                        ))}
+                    </ul>
                 </div>
-
-                <ul className="pr-statuses">
-                    <li>
-                        {pr.mergeable.toLocaleString().toLowerCase()}:{' '}
-                        <GitMerge className={`merge-icon status--${pr.mergeable}`} />
-                    </li>
-                    <li>
-                        Checks: <span className={`status--${status}`}>{status.toLocaleString().toLowerCase()}</span>
-                    </li>
-                    <li>
-                        Created:{' '}
-                        {new Date(pr.createdAt).toLocaleString('en-UK', {
-                            year: 'numeric',
-                            month: 'short',
-                            day: 'numeric',
-                        })}
-                    </li>
-                </ul>
-            </div>
-
-            <ul className="pr-reviews">
-                {pr.reviewRequests.nodes.map((request: IReviewRequest) => (
-                    <li key={request.requestedReviewer.avatarUrl}>
-                        <Requested {...request} />
-                    </li>
-                ))}
-                {pr.reviews.uniqueReviews.map((review: IUniqueReview) => (
-                    <li key={review.author.login}>
-                        <Review {...review} />
-                    </li>
-                ))}
-            </ul>
-        </div>
-    );
-};
-
-export default Pr;
+            </li>
+        );
+    }
+}

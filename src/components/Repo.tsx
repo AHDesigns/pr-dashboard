@@ -35,11 +35,7 @@ const Repo: React.FC<{ reposData: IPrData; repoUserFilters: TRepoUserFilters }> 
                 {reposData.pullRequests.length > 0 &&
                     reposData.pullRequests
                         .filter((pr: IPullRequest) => !pr.isDraft && pr.author && validUser(pr.author.login))
-                        .map((pr: IPullRequest) => (
-                            <li key={pr.id} className="repo-item">
-                                <Pr {...pr} />
-                            </li>
-                        ))}
+                        .map((pr: IPullRequest) => <Pr key={pr.id + pr.boardStatus} {...pr} />)}
             </ul>
         </div>
     );

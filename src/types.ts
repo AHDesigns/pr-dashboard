@@ -28,8 +28,16 @@ export function isPrData(data: any): data is IPrData {
     return typeof data === 'object' && typeof data.name === 'string' && Array.isArray(data.pullRequests);
 }
 
+enum EnumBoardStatus {
+    NEW,
+    UNCHANGED,
+    UPDATED,
+}
+
 export interface IPullRequest {
     id: string;
+    boardStatus: EnumBoardStatus;
+    updatedAt: string;
     createdAt: string;
     isDraft: boolean;
     mergeStateStatus: string;
