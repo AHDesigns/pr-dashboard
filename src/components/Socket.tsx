@@ -37,6 +37,10 @@ export class Provider extends React.Component<IProps, IState> {
         this.updateRepos = this.updateRepos.bind(this);
 
         socket.on('reviews', this.updateRepos);
+
+        socket.on('rate-limit', (rateLimit: any) => {
+            console.log('rateLimit', rateLimit);
+        });
     }
 
     componentDidUpdate(oldProps: IProps): void {

@@ -15,6 +15,7 @@ module.exports = {
     },
     rules:  {
         'react/prop-types': 0,
+        '@typescript-eslint/no-var-requires': 0, // off for server
         '@typescript-eslint/no-use-before-define': 0,
         '@typescript-eslint/interface-name-prefix': "always",
         // e.g. "@typescript-eslint/explicit-function-return-type": "off",
